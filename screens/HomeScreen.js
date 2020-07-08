@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    fontStyle: "bold",
   },
   button: {
     marginVertical: 15,
