@@ -1,24 +1,32 @@
-import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { Ionicons } from '@expo/vector-icons';
+import * as React from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import StyledButton, { TYPE } from "../components/Button";
 
 export default function Screen3({ navigation }) {
   return (
     <View style={styles.container}>
       <View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Home')}
-        > 
-          <Ionicons name="md-home" size={18} style={styles.iconLeft} color="#fff" />
-          <Text style={styles.buttonText}>Go Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonTransparent}
-          onPress={() => navigation.goBack()}
+        <StyledButton
+          onPress={() => navigation.navigate("Home")}
+          startEnhancer={
+            <Ionicons
+              style={styles.iconLeft}
+              name="md-home"
+              size={18}
+              color="#fff"
+            />
+          }
         >
-          <Text style={styles.buttonTransparentText}>Go back</Text>
-        </TouchableOpacity>
+          Go Home
+        </StyledButton>
+
+        <StyledButton
+          onPress={() => navigation.goBack()}
+          type={TYPE.transparent}
+        >
+          Go back
+        </StyledButton>
       </View>
     </View>
   );
@@ -26,34 +34,12 @@ export default function Screen3({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    alignItems: "center",
+    justifyContent: "space-around",
     flex: 1,
-    backgroundColor:'#f9f9f9',
+    backgroundColor: "#f9f9f9",
   },
-  button:{
-    marginVertical:15,
-    paddingVertical:15,
-    paddingHorizontal:20,
-    borderRadius: 5,
-    backgroundColor:'#335ff2',
-    flexDirection:'row',
-    alignItems:'center'
+  iconLeft: {
+    marginRight: 5,
   },
-  buttonText:{
-    color:'#fff',
-    fontSize:16,
-  },
-  buttonTransparent:{
-    marginVertical:15,
-    paddingVertical:15,
-    paddingHorizontal:20,
-  },
-  buttonTransparentText:{
-    color:'#666',
-    textAlign:'center'
-  },
-  iconLeft:{
-    marginRight:5
-  }
 });
