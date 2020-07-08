@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, TouchableOpacity, Image, Text } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import StyledButton, { TYPE } from "../components/Button";
 
 export default function Screen2({ navigation }) {
