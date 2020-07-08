@@ -64,7 +64,7 @@ export function StyledButton(props) {
       backgroundColor: getBackgroundColor(type),
       flexDirection: isTransparent(type) ? null : "row",
       alignItems: isTransparent(type) ? null : "center",
-      opacity: fadeAnim,
+      opacity: fadeAnim.toValue,
       transform: [{ scale: cardScale }],
     },
     buttonText: {
@@ -76,7 +76,7 @@ export function StyledButton(props) {
 
   return (
     <TapGestureHandler
-      onGestureEvent={() => {
+      onHandlerStateChange={() => {
         onClick();
       }}
     >
