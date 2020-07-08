@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { StyledButton } from "../components/Button";
+import { StyledButton, TYPE } from "../components/Button";
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -11,6 +11,7 @@ export default function HomeScreen({ navigation }) {
       <StyledButton onPress={() => navigation.navigate("Second")}>
         Go to the Next screen
       </StyledButton>
+      <StyledButton type={TYPE.secondary}>Animation test</StyledButton>
     </View>
   );
 }
