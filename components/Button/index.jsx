@@ -1,11 +1,6 @@
-import React, { useRef, useEffect } from "react";
-import {
-  View,
-  Animated,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import React, { useRef } from "react";
+import { Animated, Text, StyleSheet, Easing } from "react-native";
+import { TapGestureHandler } from "react-native-gesture-handler";
 
 export const TYPE = {
   primary: "primary",
@@ -27,45 +22,75 @@ const isTransparent = (type) => {
 };
 
 export function StyledButton(props) {
-  const { children, type, startEnhancer } = props;
-
+  const { children, type, startEnhancer, onPress } = props;
+  //Animation On render
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  React.useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 700,
+    }).start();
+  }, []);
+  //Animation On click
+  const scaleValue = new Animated.Value(0);
+  const cardScale = scaleValue.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [1, 1.1, 1.2],
+  });
+  const onClick = () => {
+    scaleValue.setValue(0);
+    Animated.sequence([
+      Animated.timing(scaleValue, {
+        toValue: 0.5,
+        duration: 50,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleValue, {
+        toValue: 0,
+        duration: 50,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+    ]).start(onPress);
+  };
+  //Styles
   const styles = StyleSheet.create({
     button: {
       marginVertical: 15,
       paddingVertical: 15,
       paddingHorizontal: 20,
-      borderRadius: isTransparent(type) ? "" : 5,
+      borderRadius: isTransparent(type) ? null : 5,
       backgroundColor: getBackgroundColor(type),
-      flexDirection: isTransparent(type) ? "" : "row",
-      alignItems: isTransparent(type) ? "" : "center",
+      flexDirection: isTransparent(type) ? null : "row",
+      alignItems: isTransparent(type) ? null : "center",
+      opacity: fadeAnim,
+      transform: [{ scale: cardScale }],
     },
     buttonText: {
       color: isTransparent(type) ? "#666" : "#fff",
-      fontSize: isTransparent(type) ? "" : 16,
-      textAlign: isTransparent(type) ? "center" : "",
+      fontSize: isTransparent(type) ? null : 16,
+      textAlign: isTransparent(type) ? "center" : null,
     },
   });
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  React.useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000,
-    }).start();
-  }, []);
+
   return (
-    <View>
-      <Animated.View
-        style={{
-          ...props.style,
-          opacity: fadeAnim, // Bind opacity to animated value
-        }}
-      >
-        <TouchableOpacity style={styles.button} onPress={props.onPress}>
-          {startEnhancer}
-          <Text style={styles.buttonText}>{children}</Text>
-        </TouchableOpacity>
+    <TapGestureHandler
+      onGestureEvent={() => {
+        onClick();
+      }}
+    >
+      <Animated.View style={styles.button}>
+        {startEnhancer}
+        <Text
+          style={{
+            ...styles.buttonText,
+          }}
+        >
+          {children}
+        </Text>
       </Animated.View>
-    </View>
+    </TapGestureHandler>
   );
 }
 
