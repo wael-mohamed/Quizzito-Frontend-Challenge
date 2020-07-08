@@ -1,5 +1,11 @@
-import React, { Children } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useRef, useEffect } from "react";
+import {
+  View,
+  Animated,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 
 export const TYPE = {
   primary: "primary",
@@ -39,11 +45,27 @@ export function StyledButton(props) {
       textAlign: isTransparent(type) ? "center" : "",
     },
   });
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  React.useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+    }).start();
+  }, []);
   return (
-    <TouchableOpacity style={styles.button} onPress={props.onPress}>
-      {startEnhancer}
-      <Text style={styles.buttonText}>{children}</Text>
-    </TouchableOpacity>
+    <View>
+      <Animated.View
+        style={{
+          ...props.style,
+          opacity: fadeAnim, // Bind opacity to animated value
+        }}
+      >
+        <TouchableOpacity style={styles.button} onPress={props.onPress}>
+          {startEnhancer}
+          <Text style={styles.buttonText}>{children}</Text>
+        </TouchableOpacity>
+      </Animated.View>
+    </View>
   );
 }
 
